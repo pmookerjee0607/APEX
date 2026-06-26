@@ -1,0 +1,9 @@
+{
+  "name": "apex",
+  "version": "0.1.0",
+  "description": "APEX — AI-Powered Execution Framework. Practitioner-designed program management skills for Claude Code.",
+  "author": {
+    "name": "Projit Mookerjee"
+  },
+  "keywords": ["project-management", "delivery", "pmo", "execution-framework"]
+}
