@@ -3,7 +3,7 @@
 
 APEX is an execution framework for AI-enabled program delivery. Skills, agents, plugins, and a context system that make Claude operate as a program-aware delivery instrument rather than a generic assistant.
 
-> Status: Phase 1 prototype. Not yet published. The skill layer is complete; the plugin and context template follow.
+> Status: Phase 1 prototype. Not yet published. The skill layer, context template, and plugin are complete.
 
 ---
 
@@ -25,7 +25,7 @@ A shared governance layer sits underneath all four. Four rules: conflicting inpu
 
 ## What's available today
 
-Phase 1 is in progress. The skill layer is complete and lives in `/apex/skills/`. The context template and plugin are scaffolded but not yet populated.
+Phase 1 is functionally complete. The skill layer, context template, and Claude Code plugin are all built and live-verified.
 
 | File | Domain | Primary output |
 |---|---|---|
@@ -38,7 +38,7 @@ Phase 1 is in progress. The skill layer is complete and lives in `/apex/skills/`
 | `pm-client.md` | Client management | Governance packs, escalation frameworks |
 | `pm-governance.md` | PMO and governance | KPI dashboards, portfolio reporting, gate packs |
 
-In development (Phase 1): `APEX_CONTEXT.md` template, `apex.plugin` for Claude Code, worked examples per skill.
+`APEX_CONTEXT.md` is a fillable program-context template. Populate it once per programme and load it alongside any skill.
 
 ---
 
@@ -50,7 +50,24 @@ Three patterns, in order of friction.
 
 **With context.** Populate `APEX_CONTEXT.md` for your program once. Load both files at session start. Same skill prompts, now program-aware.
 
-**Via Claude Code slash commands** *(coming when the plugin lands).* The `apex.plugin` will register skills as `/status-report`, `/raid-extract`, `/risk-premortem`, `/go-no-go`, `/resource-conflict`, `/financial-variance`, `/release-readiness`, and `/meeting-intel`.
+**Via Claude Code slash commands.** The `apex` plugin registers eight commands against the skill layer:
+
+```
+/status-report        → pm-reporting.md
+/raid-extract          → pm-risk.md
+/risk-premortem         → pm-risk.md (pre-mortem variant)
+/go-no-go               → pm-release.md
+/resource-conflict      → pm-resources.md
+/financial-variance     → pm-financials.md
+/release-readiness      → pm-release.md
+/meeting-intel           → pm-governance.md, then pm-risk.md
+```
+
+`/meeting-intel` runs as a two-step sequence: governance items are extracted first, then risk and RAID items are extracted informed by that governance context, rather than two independent calls.
+
+`pm-planning.md` and `pm-client.md` are not wrapped by a command. Their output is too program-specific or audience-dependent for a single command framing and are intended for direct skill invocation instead.
+
+Install: `claude --plugin-dir /path/to/apex/plugin`
 
 ---
 
@@ -74,7 +91,7 @@ On one programme, disciplined risk identification with assignable, tracked mitig
 
 | Phase | Focus | Status |
 |---|---|---|
-| 1 | Skill layer, plugin, context template | In progress |
+| 1 | Skill layer, plugin, context template | Complete |
 | 2 | Domain agents: Program Intelligence, RAID, Release Readiness | Planned |
 | 3 | Delivery Command Agent, Jira / M365 / ServiceNow / Salesforce integrations | Planned |
 
